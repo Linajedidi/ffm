@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebb29d5aaadca9641bda4dc7adb01479, type: 3}
+  m_Name: HardData
+  m_EditorClassIdentifier: 
+  Difficulty: 0
+  rows: 5
+  columns: 6
+  background: {fileID: 6080582976497815183, guid: eab0f5384f287e64699ad4b214511c12, type: 3}
+  prefferedTopBottomPadding: 30
+  spacing: {x: 30, y: 30}
