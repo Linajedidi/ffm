@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameManger : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -11,8 +13,12 @@ public class GameManger : MonoBehaviour
     private List<Transform> pieces;
 
     private int emptyLocation;
-    private int size;
+    public int size;
     private bool shuffling = true;
+    private string Win_Scene = "YouWin1";
+    public int GemNumber;
+    public Text GemText;
+    [SerializeField] private AudioClip ClickSound;
 
     private void CreateGamePieces(float gapThickness)
     {
@@ -48,16 +54,19 @@ public class GameManger : MonoBehaviour
 
         }
     }
+
     void Start()
     {
         PickImage();
         pieces = new List<Transform>();
 
-        size = 3;
+        
         CreateGamePieces(0.01f);
         StartCoroutine(WaitShuffle(3f));
     }
 
+    
+   
     private void PickImage()
     {
         Debug.Log("Pick Random Image");
@@ -70,21 +79,25 @@ public class GameManger : MonoBehaviour
         // Check for completion.
         if (!shuffling && CheckCompletion())
         {
+            GemNumber = 10;
+            GemText.text = GemNumber.ToString();
+            var oldScore = PlayerPrefs.GetInt("GemNumber", 0);
+            PlayerPrefs.SetInt("GemNumber", oldScore + GemNumber);
             Debug.Log("Completed");
-            //PlayerPrefs.DeleteAll();
-            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
-            PlayerPrefs.Save();
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            SceneManager.LoadScene(1);
-            
-            Invoke(nameof(PickImage), 3f);
-            shuffling = true;
-            StartCoroutine(WaitShuffle(6f));
+            SceneManager.LoadScene(Win_Scene);
+
+
+
+           // Invoke(nameof(PickImage), 3f);
+            //shuffling = true;
+            //StartCoroutine(WaitShuffle(6f));
         }
+        
 
         // On click send out ray to see if we click a piece.
         if (Input.GetMouseButtonDown(0) && !shuffling)
         {
+            soundManger.Instance.PlaySound(ClickSound);
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit)
             {

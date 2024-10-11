@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SceneManagement;
+using System.Security.Cryptography;
 
 
 public class GameController : MonoBehaviour
@@ -19,11 +21,13 @@ public class GameController : MonoBehaviour
     private int gameGuesses;
     private int firstGuessIndex , secondGuessIndex;
     private string firstGuessPuzzle, secondGuessPuzzle;
-    public GameObject Win_ui;
+  
     private int blueCryst = 0;
     private int greenCryst = 0;
     public Text bluecrystText;
-
+    private string Win_Scene="YouWin";
+    private int GemNumber;
+    [SerializeField] private AudioClip ClickSound;
     private void Awake()
     {
         puzzles = Resources.LoadAll<Sprite>("Sprites");
@@ -77,13 +81,14 @@ public class GameController : MonoBehaviour
         foreach (Button btn in btns)
         {
             btn.onClick.AddListener(()=>PickAPuzzle());
-            
+           
+
         }
 
     }
     public void PickAPuzzle()
     {
-       
+        soundManger.Instance.PlaySound(ClickSound);
         if (!FirstGuess)
         {
             FirstGuess = true; 
@@ -117,7 +122,7 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(.5f);
             // btns[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
             //btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
-            blueCryst= blueCryst+10;
+            blueCryst= blueCryst+1;
             UpdateCrystText();
             CheckifTheGameIsFinished();
 
@@ -140,15 +145,14 @@ public class GameController : MonoBehaviour
         countCorrectGuesses++; 
         if (countCorrectGuesses > gameGuesses)
         {
-            if (Win_ui == null)
-            {
-                Debug.LogError("TextMeshPro Text component is not assigned!");
-                return;
-            }
+           
             btns[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
             btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
             HidePuzzles();
-            Win_ui.gameObject.SetActive(true);
+            GemNumber = blueCryst;
+            var oldScore = PlayerPrefs.GetInt("GemNumber", 0);
+            PlayerPrefs.SetInt("GemNumber", oldScore + GemNumber);
+            SceneManager.LoadScene(Win_Scene);
             
             Debug.Log("Game finished");
             

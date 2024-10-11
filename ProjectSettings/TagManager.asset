@@ -5,11 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - PuzzleButton
+  - green
+  - purple
+  - orange
+  - fire
+  - key
+  - ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - player
   - Water
   - UI
   - 
@@ -50,4 +56,10 @@ TagManager:
     locked: 0
   - name: map1
     uniqueID: 3069733799
+    locked: 0
+  - name: crystals
+    uniqueID: 2006973627
+    locked: 0
+  - name: Player
+    uniqueID: 1005781303
     locked: 0
