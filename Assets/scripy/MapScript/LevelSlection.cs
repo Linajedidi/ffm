@@ -34,6 +34,7 @@ public class LevelSlection : MonoBehaviour
         {
             Player.anchoredPosition = point.anchoredPosition;
             //PlayerPrefs.DeleteAll();
+
             Unlocked = true;
 
         }
